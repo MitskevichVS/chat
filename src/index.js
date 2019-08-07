@@ -1,5 +1,6 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Header from '../src/components/header/page';
 
 const WebSocket = require('isomorphic-ws')
 
@@ -13,3 +14,6 @@ ws.onmessage = (inData) => {
   let data = inData.data;
   console.log(JSON.parse(data));
 };
+
+const element = <Header />;
+ReactDOM.render(element, document.querySelector('#root'));
