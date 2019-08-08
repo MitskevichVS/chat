@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DateTime } from "luxon";
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,6 +9,9 @@ import Divider from '@material-ui/core/Divider';
 
 
 class OneListItem extends Component {
+
+  getDate = (time) => DateTime.fromMillis(time);
+
   render() {
     return(
       <List
@@ -30,7 +34,7 @@ class OneListItem extends Component {
                           color="textSecondary"
                           whiteSpace="normal"
                         >
-                        say: 
+                        { this.getDate(item.time).c.year + '.' + this.getDate(item.time).c.month + '.' + this.getDate(item.time).c.day + '-' + this.getDate(item.time).c.hour + ':' + this.getDate(item.time).c.minute}
                         </Typography>
                         <Typography
                           display="block"
@@ -41,10 +45,10 @@ class OneListItem extends Component {
                         </Typography>
                       </React.Fragment>
                     }
-              />
-            </ListItem>
-            <Divider component="div" />
-            </>
+                  />
+                </ListItem>
+                <Divider component="div" />
+              </>
             )
           })
           )
