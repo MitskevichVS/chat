@@ -7,6 +7,11 @@ import Box from '@material-ui/core/Box';
 
 
 class Login extends Component {
+
+  addLogin = () => {
+    this.props.setName(document.querySelector('#username').value);
+  }
+
   render() {
     return (
       <Box
@@ -28,17 +33,16 @@ class Login extends Component {
         <Box
         >
           <TextField
-            id="filled-with-placeholder"
+            id="username"
             label="Enter your name"
             placeholder="Name"
-            // className={classes.textField}
             margin="normal"
             variant="filled"
           />
         </Box>
         <Box
         >
-          <Button variant="contained">
+          <Button variant="contained" type="submit" onClick={this.addLogin}>
             Submit
           </Button>
         </Box>
