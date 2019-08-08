@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Login from './components/login/login';
+import MainPage from './components/mainPage/mainPage';
 
 class App extends Component {
   state = {
@@ -8,9 +9,7 @@ class App extends Component {
   }
 
   setName = (username) => {
-    console.log(username);
     this.setState({username});
-    console.log(this);
   }
 
   render() {
@@ -19,7 +18,7 @@ class App extends Component {
         {
           !this.state.username ? 
           <Login setName={this.setName}/>
-          : <Login/>
+          : <MainPage name={this.state.username}/>
         }
       </div>
     )

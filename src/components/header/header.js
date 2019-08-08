@@ -4,15 +4,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 class Header extends Component {
-
   render() {
     return (
       <header>
-        <div flexGrow={1}>
+        <div flexgrow={1}>
           <AppBar position="static" color="default">
             <Toolbar>
               <Typography variant="h6" color="inherit">
-              WebSocket Chat
+                WebSocket Chat
               </Typography>
             </Toolbar>
           </AppBar>
