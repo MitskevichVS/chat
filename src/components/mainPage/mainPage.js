@@ -6,24 +6,34 @@ import ChatInput from '../chatInput/chatInput';
 
 
 class MainPage extends Component {
+  state = {
+    messages: []
+  }
 
   WebSocket = require('isomorphic-ws');
 
   ws = new WebSocket('ws://st-chat.shas.tel');
 
+  componentDidMount() {
+    this.ws.onmessage = (message) => {
+      const messageArray = JSON.parse(message.data).reverse();
+      this.setState({messages: [...this.state.messages, messageArray]});
+      document.querySelector('#chatList').scrollTop = 9999;
+    }
+  }
+
   getUserMessage = (m) => {
     let sendingData = {from: this.props.name, message: m};
-    console.log(sendingData);
     this.ws.send(JSON.stringify(sendingData));
   }
 
   render() {
     return (
-      <div>
+      <>
         <Header />
-        <ChatList /> 
+        <ChatList messages={this.state.messages}/> 
         <ChatInput getUserMessage={this.getUserMessage} name={this.props.name}/>       
-      </div>
+      </>
     )
   }
 };

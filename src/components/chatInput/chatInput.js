@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-
+import { Container } from '@material-ui/core';
 
 class ChatInput extends Component {
 
@@ -13,7 +13,7 @@ class ChatInput extends Component {
   
   render() {
     return (
-      <div id='userInput' style={{width: '98vw'}}>
+      <Container maxWidth='lg'>
         <TextField
           id="userMessage"
           label={this.props.name + ' message:'}
@@ -26,7 +26,7 @@ class ChatInput extends Component {
             shrink: true,
           }}
         />
-      </div>
+      </Container>
     )
   }
 };

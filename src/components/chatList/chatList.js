@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
-// import OneListItem from '../chatListItem/chatListItem';
+import OneListItem from '../chatListItem/chatListItem';
+import Container from '@material-ui/core/Container';
 // import PropTypes from 'prop-types';
 
-/* const ChatList = (data) => {
-  console.log(data);
-  const inMessageList = data.map((item, index) => {
-     return(
-      <OneListItem key={index} name={item.from} message={item.message}/>
-    ) 
-  });
-
-  return (
-    <div>
-      {inMessageList}
-    </div>
-  );
-}; */
-
 class ChatList extends Component {
+
   render() {
     return (
-      <div id='chatList'>
-
-      </div>
+      <Container
+        id='chatList'
+        maxWidth='md'
+        style={{
+          height: '72vh',
+          overflowY: "scroll",
+          overflowX: "hidden",
+          marginTop: "3%",
+          marginBottom: "3%"
+        }}
+        >
+          <OneListItem data={this.props.messages} />  
+      </Container>
     )
   }
 };
