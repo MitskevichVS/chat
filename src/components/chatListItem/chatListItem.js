@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DateTime } from "luxon";
+import { uid } from 'react-uid';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,27 +20,34 @@ class OneListItem extends Component {
       >
       { this.props.data.map((item) => {
         return (
-          item.map((item) => {
+          item.map((item, index) => {
             return (
               <>
-                <ListItem alignItems="flex-start">
+                <ListItem 
+                  alignItems="flex-start"
+                  key={ uid(index) } 
+                >
                   <ListItemText
+                    component="div"
                     primary={ item.from }
                     secondary={
-                      <React.Fragment>
+                      <React.Fragment
+                        key={ uid(item.time) } 
+                      >
                         <Typography
                           component="span"
                           variant="body2"
                           display="inline"
-                          color="textSecondary"
-                          whiteSpace="normal"
+                          whitespace="normal"
+                          key={ uid(item.time + 0.4) } 
                         >
                         { this.getDate(item.time).c.year + '.' + this.getDate(item.time).c.month + '.' + this.getDate(item.time).c.day + '-' + this.getDate(item.time).c.hour + ':' + this.getDate(item.time).c.minute}
                         </Typography>
                         <Typography
-                          display="block"
+                          // key={ uid(item.time) } 
+                          component="span"
                           overflow="hidden"
-                          style={{width: '100%'}}
+                          color="textPrimary"
                         >
                         {"- " + item.message } 
                         </Typography>
