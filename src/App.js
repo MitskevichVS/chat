@@ -26,7 +26,7 @@ class App extends Component {
         {
           !this.checkUserName() ? 
           <Login setName={this.setName}/>
-          : <MainPage name={store.get('username')}/>
+          : <MainPage name={store.get('username')} logout={this.setName}/>
         }
       </>
     )

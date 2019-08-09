@@ -13,27 +13,24 @@ class OneListItem extends Component {
 
   getDate = (time) => DateTime.fromMillis(time);
 
-  render() {
+  createListItems = (props) => {
     return(
-      <List
-        width='100%'
-      >
-      { this.props.data.map((item) => {
+      <>
+      { props.data.map((item) => {
         return (
           item.map((item, index) => {
             return (
               <>
                 <ListItem 
                   alignItems="flex-start"
-                  key={ uid(index) } 
+                  key={ item.id } 
                 >
                   <ListItemText
                     component="div"
                     primary={ item.from }
+                    key={ uid(item.id) }
                     secondary={
-                      <React.Fragment
-                        key={ uid(item.time) } 
-                      >
+                      <React.Fragment>
                         <Typography
                           component="span"
                           variant="body2"
@@ -44,7 +41,7 @@ class OneListItem extends Component {
                         { this.getDate(item.time).c.year + '.' + this.getDate(item.time).c.month + '.' + this.getDate(item.time).c.day + '-' + this.getDate(item.time).c.hour + ':' + this.getDate(item.time).c.minute}
                         </Typography>
                         <Typography
-                          // key={ uid(item.time) } 
+                          key={ uid(index) } 
                           component="span"
                           overflow="hidden"
                           color="textPrimary"
@@ -55,13 +52,25 @@ class OneListItem extends Component {
                     }
                   />
                 </ListItem>
-                <Divider component="div" />
+                <Divider component="div" key={ uid(index + 'sw') } />
               </>
             )
           })
           )
         })
       }
+      </>
+    )
+  }
+
+
+  render() {
+    return(
+      <List 
+        key={ uid('chatlist')}
+        width='100%'
+      >
+        { this.createListItems(this.props) }
       </List>
     )
   }

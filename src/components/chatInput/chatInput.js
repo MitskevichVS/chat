@@ -6,7 +6,7 @@ class ChatInput extends Component {
 
   getMessageFromUser = (event) => {
     if (event.keyCode === 13) {
-      this.props.getUserMessage(event.target.value);
+      this.props.sendMessage(event.target.value);
       event.target.value = '';
     }
   }
