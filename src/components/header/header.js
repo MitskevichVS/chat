@@ -16,7 +16,7 @@ class Header extends Component {
                 <Typography variant="h6" color="inherit" style={{flexGrow: '1'}}>
                   WebSocket Chat
                 </Typography>
-                <Button color="inherit" onClick={this.props.logout} style={{marginRight: '1%'}}>Logout</Button>
+                <Button color="inherit" onClick={this.props.logout} style={{marginRight: '1%', border: '1px solid #9a9a9c'}}>Logout</Button>
               </Toolbar>
             </AppBar>
           </Container>
