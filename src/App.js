@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import store from 'store2';
 
 import Login from './components/login/login';
 import MainPage from './components/mainPage/mainPage';
@@ -10,15 +11,22 @@ class App extends Component {
 
   setName = (username) => {
     this.setState({username});
+    store.set('username', username);
+  }
+
+  checkUserName = () => {
+    const username = store.get('username');
+    let checked = username ? true : false;
+    return checked;
   }
 
   render() {
     return (
       <>
         {
-          !this.state.username ? 
+          !this.checkUserName() ? 
           <Login setName={this.setName}/>
-          : <MainPage name={this.state.username}/>
+          : <MainPage name={store.get('username')}/>
         }
       </>
     )
