@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Container } from '@material-ui/core';
 
+
 class ChatInput extends Component {
 
   getMessageFromUser = (event) => {
@@ -20,6 +21,7 @@ class ChatInput extends Component {
           style={{ margin: 8 }}
           placeholder="Hit Enter to send message"
           fullWidth
+          autoFocus 
           margin="normal"
           onKeyUp={this.getMessageFromUser}
           InputLabelProps={{
