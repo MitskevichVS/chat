@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import Header from '../header/header';
 import ChatList from '../chatList/chatList';
@@ -10,9 +11,9 @@ class MainPage extends Component {
     messages: []
   }
 
-  WebSocket = require('isomorphic-ws');
+  // WebSocket = require('isomorphic-ws');
 
-  ws = new WebSocket('ws://st-chat.shas.tel');
+  ws = new ReconnectingWebSocket('ws://st-chat.shas.tel');
 
   componentDidMount() {
     this.ws.onmessage = (message) => {
