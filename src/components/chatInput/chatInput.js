@@ -1,7 +1,24 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Container } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
+const connected = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#00b200',
+    },
+  },
+});
+
+const disconnected = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#cc0000',
+    },
+  },
+});
 
 class ChatInput extends Component {
 
@@ -11,23 +28,34 @@ class ChatInput extends Component {
       event.target.value = '';
     }
   }
+
+  getInputColor = () => {
+    let theme;
+    if (this.props.connected) {
+      theme = connected;
+    } else theme = disconnected;
+    return theme;
+  }
+
   
   render() {
     return (
       <Container maxWidth='lg'>
-        <TextField
-          id="userMessage"
-          label={this.props.name + ' message:'}
-          style={{ margin: 8 }}
-          placeholder="Hit Enter to send message"
-          fullWidth
-          autoFocus 
-          margin="normal"
-          onKeyUp={this.getMessageFromUser}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <ThemeProvider theme={this.getInputColor()} >
+          <TextField
+            id="userMessage"
+            label={this.props.name + ' message:'}
+            style={{ margin: 8 }}
+            placeholder="Hit Enter to send message"
+            fullWidth
+            autoFocus 
+            margin="normal"
+            onKeyUp={this.getMessageFromUser}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </ThemeProvider>
       </Container>
     )
   }
