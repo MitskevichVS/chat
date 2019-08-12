@@ -7,6 +7,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 
 
 class OneListItem extends Component {
@@ -25,6 +27,9 @@ class OneListItem extends Component {
                   alignItems="flex-start"
                   key={ item.id } 
                 >
+                  <ListItemAvatar>
+                    <Avatar>{ item.from.charAt(0).toUpperCase() }</Avatar>
+                  </ListItemAvatar>
                   <ListItemText
                     component="div"
                     primary={ item.from }
@@ -52,7 +57,7 @@ class OneListItem extends Component {
                     }
                   />
                 </ListItem>
-                <Divider component="div" key={ uid(index + 'sw') } />
+                <Divider variant="inset" component="div" key={ uid(index + 'sw') } />
               </>
             )
           })
