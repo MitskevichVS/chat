@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import OneListItem from '../chatListItem/chatListItem';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 // import PropTypes from 'prop-types';
 
 class ChatList extends Component {
@@ -18,7 +20,24 @@ class ChatList extends Component {
           marginBottom: "3%"
         }}
         >
-          <OneListItem data={this.props.messages} />  
+          {
+            !this.props.displayProgress ? 
+            <div 
+              style={{
+                display: 'flex',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column'
+              }}
+            >
+              <CircularProgress />
+              <Typography variant="subtitle2" gutterBottom>
+                Try to find some messages...
+              </Typography>
+            </div> :
+            <OneListItem data={this.props.messages} />
+          } 
       </Container>
     )
   }
