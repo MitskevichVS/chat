@@ -8,8 +8,10 @@ import Box from '@material-ui/core/Box';
 
 class Login extends Component {
 
-  addLogin = () => {
-    this.props.setName(document.querySelector('#username').value);
+  addLogin = (event) => {
+    if (event.keyCode === 13 || event.type === 'click') {
+      this.props.setName(document.querySelector('#username').value);
+    }
   }
 
   render() {
@@ -38,6 +40,7 @@ class Login extends Component {
             placeholder="Name"
             margin="normal"
             variant="filled"
+            onKeyDown={this.addLogin}
           />
         </Box>
         <Box
