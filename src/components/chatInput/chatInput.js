@@ -50,6 +50,8 @@ class ChatInput extends Component {
             fullWidth
             autoFocus 
             margin="normal"
+            onFocus={this.props.checkConnection}
+            onChange={this.props.checkConnection}
             onKeyUp={this.getMessageFromUser}
             InputLabelProps={{
               shrink: true,

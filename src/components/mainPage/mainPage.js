@@ -53,6 +53,7 @@ class MainPage extends Component {
 
   sendMessage = (m) => {
     let sendingData = {from: this.props.name, message: m};
+    this.checkSocketStatus();
     this.ws.send(JSON.stringify(sendingData));
   }
 
@@ -85,8 +86,16 @@ class MainPage extends Component {
           ]}
         />
         <Header logout={this.logout}/>
-        <ChatList messages={this.state.messages} displayProgress={this.state.displayChat}/>
-        <ChatInput sendMessage={this.sendMessage} name={this.props.name} connected={this.state.connectionFlag}/>       
+        <ChatList 
+          messages={this.state.messages} 
+          displayProgress={this.state.displayChat}
+        />
+        <ChatInput 
+          sendMessage={this.sendMessage} 
+          name={this.props.name} 
+          connected={this.state.connectionFlag}
+          checkConnection={this.checkSocketStatus}
+        />       
       </>
     )
   }
