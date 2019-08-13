@@ -11,7 +11,8 @@ class MainPage extends Component {
   state = {
     messages: [],
     displayChat: false,
-    connectionFlag: true
+    connectionFlag: true,
+    scrollFlag: false
   }
 
   ws = new ReconnectingWebSocket('ws://st-chat.shas.tel');
@@ -53,14 +54,26 @@ class MainPage extends Component {
       this.setState({messages: [...this.state.messages, messageArray]});
       this.setState({displayChat: true});
 
-      if (document.querySelector('#chatList') !== null) {
-        document.querySelector('#chatList').scrollTop = 99999;
-      } else this.setState({displayChat: true});
+      if (this.state.scrollFlag === true) {
+        const list = document.querySelector('#chatList');
+        list.scrollTop = list.scrollHeight;
+      }
+
+      if (document.querySelector('#chatList') === null) {
+        this.setState({displayChat: true});
+      }
 
       if (document.visibilityState === 'hidden' && messageArray[0] !== undefined) {
         this.notify(messageArray[0]);
       }
     }
+  }
+
+  handleScroll = (event) => {
+    let element = event.target;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      this.setState({scrollFlag: true});
+    } else this.setState({scrollFlag: false});
   }
 
   componentWillUnmount() {
@@ -85,6 +98,7 @@ class MainPage extends Component {
         <ChatList 
           messages={this.state.messages} 
           displayProgress={this.state.displayChat}
+          scroll={this.handleScroll}
         />
         <ChatInput 
           sendMessage={this.sendMessage} 
