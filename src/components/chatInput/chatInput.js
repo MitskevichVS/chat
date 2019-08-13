@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Container } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
 const connected = createMuiTheme({
   palette: {
@@ -21,37 +22,42 @@ const disconnected = createMuiTheme({
 });
 
 class ChatInput extends Component {
+  clearInput = () => {
+    document.querySelector('#userMessage').value = '';
+  }
 
   getMessageFromUser = (event) => {
+    const { sendMessage } = this.props;
     if (event.keyCode === 13) {
-      this.props.sendMessage(event.target.value);
-      event.target.value = '';
+      sendMessage(event.target.value);
+      this.clearInput();
     }
   }
 
   getInputColor = () => {
     let theme;
-    if (this.props.connected) {
+    const { isConnected } = this.props;
+    if (isConnected === true) {
       theme = connected;
     } else theme = disconnected;
     return theme;
   }
-
   
   render() {
+    const { name, checkConnection } = this.props;
     return (
-      <Container maxWidth='lg'>
+      <Container maxWidth="lg">
         <ThemeProvider theme={this.getInputColor()} >
           <TextField
             id="userMessage"
-            label={this.props.name + ' message:'}
+            label={name + " message:"}
             style={{ margin: 8 }}
             placeholder="Hit Enter to send message"
             fullWidth
             autoFocus 
             margin="normal"
-            onFocus={this.props.checkConnection}
-            onChange={this.props.checkConnection}
+            onFocus={checkConnection}
+            onChange={checkConnection}
             onKeyUp={this.getMessageFromUser}
             InputLabelProps={{
               shrink: true,
@@ -60,7 +66,12 @@ class ChatInput extends Component {
         </ThemeProvider>
       </Container>
     )
-  }
+  };
+}
+
+ChatInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  checkConnection: PropTypes.func.isRequired,
 };
 
 export default ChatInput;
