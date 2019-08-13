@@ -4,28 +4,36 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import Header from '../header/header';
 import ChatList from '../chatList/chatList';
 import ChatInput from '../chatInput/chatInput';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
+import NotificationIcon from '../../images/NotificationIcon.png';
 
 
 class MainPage extends Component {
   state = {
     messages: [],
-    showNotification: false,
-    notificationMessageFrom: '',
     displayChat: false,
     connectionFlag: true
   }
 
   ws = new ReconnectingWebSocket('ws://st-chat.shas.tel');
 
-  closeNotification = () => {
-    this.setState({showNotification: false})
+  notify = (messageFrom) => {
+    if (Notification.permission === "granted") {
+      let title = `You have a new message(s) from ${messageFrom.from}`;
+      let options = {
+        body: messageFrom.message,
+        icon: NotificationIcon,
+    };
+      let notification = new Notification(title, options);
+      notification.onclick = function(event) {
+        event.preventDefault();
+        notification.close();
+      }
+    }
   }
+
 
   checkSocketStatus = () => {
      let status = this.ws.readyState;
-     console.log(status);
      if (status === 3){
        this.setState({connectionFlag: false});
      } else if (status !== 3 && this.state.connectionFlag === false) {
@@ -34,15 +42,23 @@ class MainPage extends Component {
    }
   
   componentDidMount() {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    } else {
+      Notification.requestPermission();
+    }
+
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
       this.setState({messages: [...this.state.messages, messageArray]});
       this.setState({displayChat: true});
+
       if (document.querySelector('#chatList') !== null) {
         document.querySelector('#chatList').scrollTop = 99999;
       } else this.setState({displayChat: true});
+
       if (document.visibilityState === 'hidden' && messageArray[0] !== undefined) {
-        this.setState({showNotification: true, notificationMessageFrom: messageArray[0].from})
+        this.notify(messageArray[0]);
       }
     }
   }
@@ -65,26 +81,6 @@ class MainPage extends Component {
   render() {
     return (
       <>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={this.state.showNotification}
-          autoHideDuration={2500}
-          //disableWindowBlurListener={false}
-          onClose={this.closeNotification}
-          message={<span id="message-id">You have a message from { this.state.notificationMessageFrom }</span>}
-          action={[
-            <IconButton
-              key="close"
-              color="inherit"
-              onClick={this.closeNotification}
-            >
-              x
-            </IconButton>
-          ]}
-        />
         <Header logout={this.logout}/>
         <ChatList 
           messages={this.state.messages} 
@@ -93,7 +89,7 @@ class MainPage extends Component {
         <ChatInput 
           sendMessage={this.sendMessage} 
           name={this.props.name} 
-          connected={this.state.connectionFlag}
+          isConnected={this.state.connectionFlag}
           checkConnection={this.checkSocketStatus}
         />       
       </>
