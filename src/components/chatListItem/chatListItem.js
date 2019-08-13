@@ -6,7 +6,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -24,40 +23,46 @@ class OneListItem extends Component {
             return (
               <>
                 <ListItem 
+                  key={ item.id }
                   alignItems="flex-start"
-                  key={ item.id } 
                 >
                   <ListItemAvatar>
                     <Avatar>{ item.from.charAt(0).toUpperCase() }</Avatar>
                   </ListItemAvatar>
                   <ListItemText
+                    key={ uid(item.id) }
                     component="div"
                     primary={ item.from }
-                    key={ uid(item.id) }
                     secondary={
                       <React.Fragment>
                         <Typography
+                          key={ uid(index) }
                           component="span"
-                          variant="body2"
-                          display="inline"
-                          whitespace="normal"
-                          key={ uid(item.time + 0.4) } 
+                          color="textPrimary"
+                          style={{
+                            wordWrap: "break-word",
+                            wordBreak: "break-all",
+                            backgroundColor: "#99daad",
+                            borderRadius: "10px",
+                            padding:"1% 2%",
+                            display:"inline-block",
+                            maxWidth:"45%"
+                          }}
                         >
-                        { this.getDate(item.time).c.year + '.' + this.getDate(item.time).c.month + '.' + this.getDate(item.time).c.day + '-' + this.getDate(item.time).c.hour + ':' + this.getDate(item.time).c.minute}
+                        { item.message } 
                         </Typography>
                         <Typography
-                          key={ uid(index) } 
+                          key={ uid(item.time + 0.4) } 
                           component="span"
-                          overflow="hidden"
-                          color="textPrimary"
+                          variant="body2"
+                          display="block"
                         >
-                        {"- " + item.message } 
+                        { this.getDate(item.time).c.year + '.' + this.getDate(item.time).c.month + '.' + this.getDate(item.time).c.day + '-' + this.getDate(item.time).c.hour + ':' + this.getDate(item.time).c.minute}
                         </Typography>
                       </React.Fragment>
                     }
                   />
                 </ListItem>
-                <Divider variant="inset" component="div" key={ uid(index + 'sw') } />
               </>
             )
           })
