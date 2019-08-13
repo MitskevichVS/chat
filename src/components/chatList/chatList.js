@@ -3,15 +3,16 @@ import OneListItem from '../chatListItem/chatListItem';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class ChatList extends Component {
-
   render() {
+    const { scroll, displayProgress, messages } = this.props;
     return (
       <Container
         id='chatList'
         maxWidth='md'
+        onScroll={scroll}
         style={{
           height: '72vh',
           overflowY: "scroll",
@@ -21,7 +22,7 @@ class ChatList extends Component {
         }}
         >
           {
-            !this.props.displayProgress ? 
+            !displayProgress ? 
             <div 
               style={{
                 display: 'flex',
@@ -36,11 +37,17 @@ class ChatList extends Component {
                 Try to find some messages...
               </Typography>
             </div> :
-            <OneListItem data={this.props.messages} />
+            <OneListItem data={messages}/>
           } 
       </Container>
     )
   }
+};
+
+ChatList.propTypes = {
+  scroll: PropTypes.func.isRequired,
+  displayProgress: PropTypes.bool.isRequired,
+  messages: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default ChatList;
