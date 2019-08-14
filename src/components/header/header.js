@@ -3,29 +3,37 @@ import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+
 
 class Header extends Component {
   render() {
+    const { logout } = this.props;
     return (
-      <header>
-        <Container maxWidth='lg'>
-          <AppBar position="static" color="default">
+          <AppBar 
+            position="static" 
+            color="default" 
+            style={{
+              width: "90%",
+              margin: "0 auto",
+              maxWidth: "1200px",
+            }}>
               <Toolbar>
-                <Typography variant="h6" color="inherit" style={{flexGrow: '1'}}>
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  style={{flexGrow: '1'}}
+                >
                   WebSocket Chat
                 </Typography>
                 <Button 
                   color="inherit" 
-                  onClick={this.props.logout} 
+                  onClick={logout} 
                 >
                 logout
                 </Button>
               </Toolbar>
             </AppBar>
-          </Container>
-      </header>
     )
   }
 };

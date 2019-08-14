@@ -14,11 +14,11 @@ class ChatList extends Component {
         maxWidth='md'
         onScroll={scroll}
         style={{
-          height: '72vh',
+          height: "77vh",
           overflowY: "scroll",
           overflowX: "hidden",
-          marginTop: "3%",
-          marginBottom: "3%"
+          marginTop: "1vh",
+          marginBottom: "1vh"
         }}
         >
           {

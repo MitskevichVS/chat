@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Container } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -46,16 +45,19 @@ class ChatInput extends Component {
   render() {
     const { name, checkConnection } = this.props;
     return (
-      <Container maxWidth="lg">
         <ThemeProvider theme={this.getInputColor()} >
           <TextField
             id="userMessage"
             label={name + " message:"}
-            style={{ margin: 8 }}
+            style={{ 
+              margin: "0 auto",
+              width: "90%",
+              display: "block",
+              maxWidth: "1200px"
+            }}
             placeholder="Hit Enter to send message"
             fullWidth
             autoFocus 
-            margin="normal"
             onFocus={checkConnection}
             onChange={checkConnection}
             onKeyUp={this.getMessageFromUser}
@@ -64,7 +66,6 @@ class ChatInput extends Component {
             }}
           />
         </ThemeProvider>
-      </Container>
     )
   };
 }
