@@ -4,13 +4,14 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
 
 
 class Login extends Component {
-
   addLogin = (event) => {
+    const { setName } = this.props;
     if (event.keyCode === 13 || event.type === 'click') {
-      this.props.setName(document.querySelector('#username').value);
+      setName(document.querySelector('#username').value);
     }
   }
 
@@ -24,16 +25,14 @@ class Login extends Component {
         p={1}
         m={1}
         style={{ height: '70vh' }}
-        
+
       >
-        <Box
-        >
+        <Box>
           <Typography variant="h5">
             Please, log in.
           </Typography>
         </Box>
-        <Box
-        >
+        <Box>
           <TextField
             id="username"
             label="Enter your name"
@@ -43,15 +42,18 @@ class Login extends Component {
             onKeyDown={this.addLogin}
           />
         </Box>
-        <Box
-        >
+        <Box>
           <Button variant="contained" type="submit" onClick={this.addLogin}>
             Submit
           </Button>
         </Box>
       </Box>
-    )
+    );
   }
+}
+
+Login.propTypes = {
+  setName: PropTypes.func.isRequired,
 };
 
 export default Login;
