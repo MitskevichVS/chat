@@ -41,6 +41,7 @@ class OneListItem extends Component {
       <List 
         key={ uid('chatlist')}
         width='100%'
+        id="chatListUl"
       >
         { this.createListItems(this.props) }
       </List>

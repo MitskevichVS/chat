@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import store from 'store2';
 
 import Header from '../header/header';
 import ChatList from '../chatList/chatList';
@@ -12,7 +13,7 @@ class MainPage extends Component {
     messages: [],
     displayChat: false,
     connectionFlag: true,
-    scrollFlag: false,
+    scrollDownFlag: false,
     userMessages: [],
     userMessagesId: []
   }
@@ -26,6 +27,8 @@ class MainPage extends Component {
       Notification.requestPermission();
     }
 
+
+
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
       this.checkUserMessages(messageArray);
@@ -35,18 +38,23 @@ class MainPage extends Component {
         messages: [...prevState.messages, messageArray]
       }));
       this.setState({displayChat: true});
-
-      if (this.state.scrollFlag === true) {
+      
+      if (this.state.scrollDownFlag === true) {
         const list = document.querySelector('#chatList');
         list.scrollTop = list.scrollHeight;
       }
-
+      
       if (document.querySelector('#chatList') === null) {
         this.setState({displayChat: false});
       }
-
+      
       if (document.visibilityState === 'hidden' && messageArray[0] !== undefined) {
         this.notify(messageArray[0]);
+      }
+      this.checkListLength();
+      if (store.get('userMessagesId').length > 0) {
+        const userMessagesIdStore = store.get('userMessagesId');
+        this.setState({userMessagesId: userMessagesIdStore});
       }
     }
   }
@@ -64,6 +72,19 @@ class MainPage extends Component {
       }
    }
 
+  checkListLength = () => {
+    const list = document.querySelector('#chatListUl');
+    if (list === null) return;
+    const listChildLength = list.childNodes.length;
+    const listLengthStorage = store.get('listLength')
+    console.log(listChildLength);
+    console.log(listLengthStorage);
+    if (listChildLength >= listLengthStorage){
+      store.set('listLength', listChildLength);
+    } else {store.set('listLength', 0);
+    store.set('userMessagesId', []);}
+  }
+
    checkUserMessages = (array) => {
      const { name } = this.props;
      let userMessage = this.state.userMessages;
@@ -73,8 +94,9 @@ class MainPage extends Component {
          this.setState(prevState => ({
           userMessagesId: [...prevState.userMessagesId, message.id]
         }))
-       }
-     })
+        store.set('userMessagesId', this.state.userMessagesId);
+      }
+    })
    }
 
    sendMessage = (m) => {
@@ -94,8 +116,8 @@ class MainPage extends Component {
   handleScroll = (event) => {
    let element = event.target;
    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-     this.setState({scrollFlag: true});
-   } else this.setState({scrollFlag: false});
+     this.setState({scrollDownFlag: true});
+   } else this.setState({scrollDownFlag: false});
  }
   
   notify = (messageFrom) => {
