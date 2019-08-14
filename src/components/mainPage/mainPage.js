@@ -121,6 +121,7 @@ class MainPage extends Component {
           messages={this.state.messages} 
           displayProgress={this.state.displayChat}
           scroll={this.handleScroll}
+          userMessagesId={this.state.userMessagesId}
         />
         <ChatInput 
           sendMessage={this.sendMessage} 
