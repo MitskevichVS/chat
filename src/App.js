@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import store from 'store2';
 
@@ -5,18 +6,21 @@ import Login from './components/login/login';
 import MainPage from './components/mainPage/mainPage';
 
 class App extends Component {
-  state = {
-    username: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+    };
   }
 
-  setName = (username) => {
-    this.setState({username});
-    store.set('username', username);
+  setName = (usernamelog) => {
+    this.setState({ username: usernamelog });
+    store.set('username', usernamelog);
   }
 
   checkUserName = () => {
     const username = store.get('username');
-    let checked = username ? true : false;
+    const checked = !!username;
     return checked;
   }
 
@@ -24,12 +28,12 @@ class App extends Component {
     return (
       <>
         {
-          !this.checkUserName() ? 
-          <Login setName={this.setName}/>
-          : <MainPage name={store.get('username')} logout={this.setName}/>
+          !this.checkUserName()
+            ? <Login setName={this.setName} />
+            : <MainPage name={store.get('username')} logout={this.setName} />
         }
       </>
-    )
+    );
   }
 }
 
