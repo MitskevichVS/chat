@@ -12,36 +12,13 @@ class MainPage extends Component {
     messages: [],
     displayChat: false,
     connectionFlag: true,
-    scrollFlag: false
+    scrollFlag: false,
+    userMessages: [],
+    userMessagesId: []
   }
 
   ws = new ReconnectingWebSocket('ws://st-chat.shas.tel');
 
-  notify = (messageFrom) => {
-    if (Notification.permission === "granted") {
-      let title = `You have a new message(s) from ${messageFrom.from}`;
-      let options = {
-        body: messageFrom.message,
-        icon: NotificationIcon,
-    };
-      let notification = new Notification(title, options);
-      notification.onclick = function(event) {
-        event.preventDefault();
-        notification.close();
-      }
-    }
-  }
-
-
-  checkSocketStatus = () => {
-     let status = this.ws.readyState;
-     if (status === 3){
-       this.setState({connectionFlag: false});
-     } else if (status !== 3 && this.state.connectionFlag === false) {
-       this.setState({connectionFlag: true});
-     }
-   }
-  
   componentDidMount() {
     if (!("Notification" in window)) {
       alert("This browser does not support desktop notification");
@@ -51,7 +28,12 @@ class MainPage extends Component {
 
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
-      this.setState({messages: [...this.state.messages, messageArray]});
+      this.checkUserMessages(messageArray);
+      console.log(messageArray);
+      console.log(this.state.userMessagesId);
+      this.setState(prevState => ({
+        messages: [...prevState.messages, messageArray]
+      }));
       this.setState({displayChat: true});
 
       if (this.state.scrollFlag === true) {
@@ -60,7 +42,7 @@ class MainPage extends Component {
       }
 
       if (document.querySelector('#chatList') === null) {
-        this.setState({displayChat: true});
+        this.setState({displayChat: false});
       }
 
       if (document.visibilityState === 'hidden' && messageArray[0] !== undefined) {
@@ -69,26 +51,66 @@ class MainPage extends Component {
     }
   }
 
-  handleScroll = (event) => {
-    let element = event.target;
-    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-      this.setState({scrollFlag: true});
-    } else this.setState({scrollFlag: false});
-  }
-
   componentWillUnmount() {
     this.ws.close();
   }
 
-  sendMessage = (m) => {
-    let sendingData = {from: this.props.name, message: m};
+  checkSocketStatus = () => {
+    let status = this.ws.readyState;
+     if (status === 3){
+       this.setState({connectionFlag: false});
+      } else if (status !== 3 && this.state.connectionFlag === false) {
+       this.setState({connectionFlag: true});
+      }
+   }
+
+   checkUserMessages = (array) => {
+     const { name } = this.props;
+     let userMessage = this.state.userMessages;
+     userMessage.forEach(item => {
+       let message = array.find(arrayObj => arrayObj.from === name && arrayObj.message === item.message);
+       if(message){
+         this.setState(prevState => ({
+          userMessagesId: [...prevState.userMessagesId, message.id]
+        }))
+       }
+     })
+   }
+
+   sendMessage = (m) => {
+     let sendingData = {from: this.props.name, message: m};
+     this.setState(prevState => ({
+      userMessages: [...prevState.userMessages, sendingData]
+    }));
     this.checkSocketStatus();
     this.ws.send(JSON.stringify(sendingData));
   }
-
+  
   logout = () => {
     this.props.logout(null);
     this.ws.close();
+  }
+
+  handleScroll = (event) => {
+   let element = event.target;
+   if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+     this.setState({scrollFlag: true});
+   } else this.setState({scrollFlag: false});
+ }
+  
+  notify = (messageFrom) => {
+    if (Notification.permission === "granted") {
+      let title = `You have a new message(s) from ${messageFrom.from}`;
+      let options = {
+        body: messageFrom.message,
+        icon: NotificationIcon,
+      };
+      let notification = new Notification(title, options);
+      notification.onclick = function(event) {
+        event.preventDefault();
+        notification.close();
+      }
+    }
   }
 
   render() {
