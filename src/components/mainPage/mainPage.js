@@ -11,9 +11,12 @@ import NotificationIcon from '../../images/NotificationIcon.png';
 class MainPage extends Component {
   state = {
     messages: [],
+    firstMessagesSlicedArray: [],
     displayChat: false,
+    displayMessagesCount: 0,
     connectionFlag: true,
     scrollDownFlag: false,
+    scrollUpFlag: false,
     userMessages: [],
     userMessagesId: []
   }
@@ -31,18 +34,29 @@ class MainPage extends Component {
 
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
+      if (messageArray.length > 15){
+        const size = 15;
+        let auxArray = [];
+        for (let i = 0; i < Math.ceil(messageArray.length/size); i+=1){
+          auxArray[i] = messageArray.slice((i*size), (i*size) + size);
+      }
+      this.setState({displayMessagesCount: auxArray.length - 1});
+      this.setState({firstMessagesSlicedArray: auxArray});
+      this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
+      }
       this.checkUserMessages(messageArray);
-      console.log(messageArray);
-      console.log(this.state.userMessagesId);
-      this.setState(prevState => ({
-        messages: [...prevState.messages, messageArray]
-      }));
+      if (messageArray.length < 15){
+        this.setState(prevState => ({
+          messages: [...prevState.messages, messageArray]
+        }));
+      }
       this.setState({displayChat: true});
       
       if (this.state.scrollDownFlag === true) {
         const list = document.querySelector('#chatList');
         list.scrollTop = list.scrollHeight;
       }
+
       
       if (document.querySelector('#chatList') === null) {
         this.setState({displayChat: false});
@@ -61,6 +75,17 @@ class MainPage extends Component {
 
   componentWillUnmount() {
     this.ws.close();
+  }
+
+  setInitialMessagesState = (array) => {
+    let count = this.state.displayMessagesCount;
+    if (count < 0) return;
+    this.setState(prevState => ({
+      messages: [array[count], ...prevState.messages]
+    }));
+    this.setState({displayMessagesCount: count - 1});
+    this.setState({scrollUpFlag: false});
+    document.querySelector('#chatList').scrollTop = 1500;
   }
 
   checkSocketStatus = () => {
@@ -114,11 +139,17 @@ class MainPage extends Component {
   }
 
   handleScroll = (event) => {
-   let element = event.target;
-   if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-     this.setState({scrollDownFlag: true});
-   } else this.setState({scrollDownFlag: false});
- }
+    let element = event.target;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      this.setState({scrollDownFlag: true});
+    } else if (element.scrollTop === 0) {
+      this.setState({scrollUpFlag: true});
+      this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
+    } else {
+      this.setState({scrollDownFlag: false});
+      this.setState({scrollUpFlag: false});
+    }
+  }
   
   notify = (messageFrom) => {
     if (Notification.permission === "granted") {
