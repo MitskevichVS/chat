@@ -85,6 +85,9 @@ class MainPage extends Component {
     }));
     this.setState({displayMessagesCount: count - 1});
     this.setState({scrollUpFlag: false});
+    if (array[count].length < 10){
+      this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
+    }
     document.querySelector('#chatList').scrollTop = 1500;
   }
 
@@ -110,14 +113,14 @@ class MainPage extends Component {
     }
   }
 
-   checkUserMessages = (array) => {
-     const { name } = this.props;
-     let userMessage = this.state.userMessages;
-     userMessage.forEach(item => {
-       let message = array.find(arrayObj => arrayObj.from === name && arrayObj.message === item.message);
-       if(message){
-         this.setState(prevState => ({
-          userMessagesId: [...prevState.userMessagesId, message.id]
+  checkUserMessages = (array) => {
+    const { name } = this.props;
+    let userMessage = this.state.userMessages;
+    userMessage.forEach(item => {
+      let message = array.find(arrayObj => arrayObj.from === name && arrayObj.message === item.message);
+      if(message){
+        this.setState(prevState => ({
+         userMessagesId: [...prevState.userMessagesId, message.id]
         }))
         store.set('userMessagesId', this.state.userMessagesId);
       }
