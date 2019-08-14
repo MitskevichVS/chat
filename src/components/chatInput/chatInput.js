@@ -41,39 +41,40 @@ class ChatInput extends Component {
     } else theme = disconnected;
     return theme;
   }
-  
+
   render() {
     const { name, checkConnection } = this.props;
     return (
-        <ThemeProvider theme={this.getInputColor()} >
-          <TextField
-            id="userMessage"
-            label={name + " message:"}
-            style={{ 
-              margin: "0 auto",
-              width: "90%",
-              display: "block",
-              maxWidth: "1200px"
-            }}
-            placeholder="Hit Enter to send message"
-            fullWidth
-            autoFocus 
-            onFocus={checkConnection}
-            onChange={checkConnection}
-            onKeyUp={this.getMessageFromUser}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </ThemeProvider>
-    )
-  };
+      <ThemeProvider theme={this.getInputColor()}>
+        <TextField
+          id="userMessage"
+          label={`${name} message:`}
+          style={{
+            margin: '0 auto',
+            width: '90%',
+            display: 'block',
+            maxWidth: '1200px',
+          }}
+          placeholder="Hit Enter to send message"
+          fullWidth
+          autoFocus
+          onFocus={checkConnection}
+          onChange={checkConnection}
+          onKeyUp={this.getMessageFromUser}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </ThemeProvider>
+    );
+  }
 }
 
 ChatInput.propTypes = {
   name: PropTypes.string.isRequired,
   checkConnection: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  isConnected: PropTypes.bool.isRequired,
 };
 
 export default ChatInput;
-
