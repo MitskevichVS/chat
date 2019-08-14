@@ -76,13 +76,13 @@ class MainPage extends Component {
     const list = document.querySelector('#chatListUl');
     if (list === null) return;
     const listChildLength = list.childNodes.length;
-    const listLengthStorage = store.get('listLength')
-    console.log(listChildLength);
-    console.log(listLengthStorage);
+    const listLengthStorage = store.get('listLength');
     if (listChildLength >= listLengthStorage){
       store.set('listLength', listChildLength);
-    } else {store.set('listLength', 0);
-    store.set('userMessagesId', []);}
+    } else {
+      store.set('listLength', 0);
+      store.set('userMessagesId', []);
+    }
   }
 
    checkUserMessages = (array) => {
