@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import OneListItem from '../chatListItem/chatListItem';
 import Container from '@material-ui/core/Container';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+
+import CircProgress from './progress/progress';
 
 class ChatList extends Component {
   render() {
-    const { scroll, displayProgress, messages } = this.props;
+    const { scroll, displayProgress, messages, userMessagesId } = this.props;
     return (
       <Container
         id='chatList'
@@ -22,22 +22,7 @@ class ChatList extends Component {
         }}
         >
           {
-            !displayProgress ? 
-            <div 
-              style={{
-                display: 'flex',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column'
-              }}
-            >
-              <CircularProgress />
-              <Typography variant="subtitle2" gutterBottom>
-                Try to find some messages...
-              </Typography>
-            </div> :
-            <OneListItem data={messages}/>
+            !displayProgress ? <CircProgress /> : <OneListItem data={messages} userMessagesId={userMessagesId}/>
           } 
       </Container>
     )
