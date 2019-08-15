@@ -69,10 +69,12 @@ class MainPage extends Component {
         this.notify(messageArray[0]);
       }
       this.checkListLength();
-      if (store.get('userMessagesId').length > 0) {
-        const userMessagesIdStore = store.get('userMessagesId');
-        this.setState({ userMessagesId: userMessagesIdStore });
-      }
+      if (store.get('userMessageId')) {
+        if (store.get('userMessagesId').length > 0) {
+          const userMessagesIdStore = store.get('userMessagesId');
+          this.setState({ userMessagesId: userMessagesIdStore });
+        }
+      } else store.set('userMessageId', []);
     };
   }
 
