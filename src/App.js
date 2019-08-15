@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable react/no-unused-state */
+import React, { Component } from 'react';
+import store from 'store2';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Login from './components/login/login';
+import MainPage from './components/mainPage/mainPage';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+    };
+  }
+
+  setName = (usernamelog) => {
+    this.setState({ username: usernamelog });
+    store.set('username', usernamelog);
+  }
+
+  checkUserName = () => {
+    const username = store.get('username');
+    const checked = !!username;
+    return checked;
+  }
+
+  render() {
+    return (
+      <>
+        {
+          !this.checkUserName()
+            ? <Login setName={this.setName} />
+            : <MainPage name={store.get('username')} logout={this.setName} />
+        }
+      </>
+    );
+  }
 }
 
 export default App;
