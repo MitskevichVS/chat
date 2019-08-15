@@ -5,22 +5,22 @@ import Typography from '@material-ui/core/Typography';
 
 class CircProgress extends Component {
   render() {
-    return(
-      <div 
-      style={{
-        display: 'flex',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-      }}
-    >
-      <CircularProgress />
-      <Typography variant="subtitle2" gutterBottom>
+    return (
+      <div
+        style={{
+          display: 'flex',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <CircularProgress />
+        <Typography variant="subtitle2" gutterBottom>
         Try to find some messages...
-      </Typography>
-    </div>
-    )
+        </Typography>
+      </div>
+    );
   }
 }
 

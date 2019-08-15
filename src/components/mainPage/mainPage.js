@@ -38,7 +38,6 @@ class MainPage extends Component {
 
 
     this.ws.onmessage = (message) => {
-      const { scrollDownFlag } = this.state;
       const messageArray = JSON.parse(message.data).reverse();
       if (messageArray.length > 15) {
         const size = 15;
@@ -48,7 +47,6 @@ class MainPage extends Component {
         }
         this.setState({ displayMessagesCount: auxArray.length - 1 });
         this.setState({ firstMessagesSlicedArray: auxArray });
-        // eslint-disable-next-line react/destructuring-assignment
         this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
       }
       this.checkUserMessages(messageArray);
@@ -59,7 +57,7 @@ class MainPage extends Component {
       }
       this.setState({ displayChat: true });
 
-      if (scrollDownFlag === true) {
+      if (this.state.scrollDownFlag === true) {
         const list = document.querySelector('#chatList');
         list.scrollTop = list.scrollHeight;
       }
@@ -85,26 +83,26 @@ class MainPage extends Component {
   }
 
   setInitialMessagesState = (array) => {
-    const { displayMessagesCount, firstMessagesSlicedArray } = this.state;
-    const count = displayMessagesCount;
+    const count = this.state.displayMessagesCount;
     if (count < 0) return;
     this.setState((prevState) => ({
       messages: [array[count], ...prevState.messages],
     }));
     this.setState({ displayMessagesCount: count - 1 });
     this.setState({ scrollUpFlag: false });
-    if (array[count].length < 10) {
-      this.setInitialMessagesState(firstMessagesSlicedArray);
+    if (array.length !== 0) {
+      if (array[count].length < 15) {
+        this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
+      }
     }
     document.querySelector('#chatList').scrollTop = 1500;
   }
 
   checkSocketStatus = () => {
-    const { connectionFlag } = this.state;
     const status = this.ws.readyState;
     if (status === 3) {
       this.setState({ connectionFlag: false });
-    } else if (status !== 3 && connectionFlag === false) {
+    } else if (status !== 3 && this.state.connectionFlag === false) {
       this.setState({ connectionFlag: true });
     }
   }
@@ -124,8 +122,7 @@ class MainPage extends Component {
 
   checkUserMessages = (array) => {
     const { name } = this.props;
-    const { userMessages, userMessagesId } = this.state;
-    const userMessage = userMessages;
+    const userMessage = this.state.userMessages;
     userMessage.forEach((item) => {
       // eslint-disable-next-line max-len
       const message = array.find((arrayObj) => arrayObj.from === name && arrayObj.message === item.message);
@@ -133,7 +130,7 @@ class MainPage extends Component {
         this.setState((prevState) => ({
           userMessagesId: [...prevState.userMessagesId, message.id],
         }));
-        store.set('userMessagesId', userMessagesId);
+        store.set('userMessagesId', this.state.userMessagesId);
       }
     });
   }
@@ -185,22 +182,19 @@ class MainPage extends Component {
 
   render() {
     const { name } = this.props;
-    const {
-      messages, connectionFlag, userMessagesId, displayChat,
-    } = this.state;
     return (
       <>
         <Header logout={this.logout} />
         <ChatList
-          messages={messages}
-          displayProgress={displayChat}
+          messages={this.state.messages}
+          displayProgress={this.state.displayChat}
           scroll={this.handleScroll}
-          userMessagesId={userMessagesId}
+          userMessagesId={this.state.userMessagesId}
         />
         <ChatInput
           sendMessage={this.sendMessage}
           name={name}
-          isConnected={connectionFlag}
+          isConnected={this.state.connectionFlag}
           checkConnection={this.checkSocketStatus}
         />
       </>

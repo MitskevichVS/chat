@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 import Typography from '@material-ui/core/Typography';
 import { uid } from 'react-uid';
+import PropTypes from 'prop-types';
 
 class MessageDate extends Component {
   getDate = (t) => DateTime.fromMillis(t);
@@ -11,15 +12,19 @@ class MessageDate extends Component {
     const { t } = this.props;
     return (
       <Typography
-        key={ uid(t + "1f4") } 
+        key={uid(`${t}1f4`)}
         component="span"
         variant="body2"
         display="block"
       >
-      { this.getDate(t).c.year + '.' + this.getDate(t).c.month + '.' + this.getDate(t).c.day + '-' + this.getDate(t).c.hour + ':' + this.getDate(t).c.minute}
+        { `${this.getDate(t).c.year}.${this.getDate(t).c.month}.${this.getDate(t).c.day}-${this.getDate(t).c.hour}:${this.getDate(t).c.minute}`}
       </Typography>
-    )
+    );
   }
 }
+
+MessageDate.propTypes = {
+  t: PropTypes.string.isRequired,
+};
 
 export default MessageDate;
