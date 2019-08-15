@@ -9,7 +9,6 @@ function ChatList(props) {
   const {
     scroll, displayProgress, messages, userMessagesId,
   } = props;
-  console.log(messages);
   return (
     <Container
       id="chatList"

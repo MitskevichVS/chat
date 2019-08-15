@@ -99,7 +99,7 @@ class MainPage extends Component {
     this.setState({ displayMessagesCount: count - 1 });
     this.setState({ scrollUpFlag: false });
     if (array.length !== 0) {
-      if (array[count].length < 15) {
+      if (array[count].length < 15 && array.length > 1) {
         this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
       }
     }
@@ -155,7 +155,6 @@ class MainPage extends Component {
 
   logout = () => {
     const { logout, name } = this.props;
-    console.log(this.props);
     logout(null);
     this.ws.close();
     store.set('prevName', name);
