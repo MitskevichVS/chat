@@ -39,7 +39,7 @@ class MainPage extends Component {
 
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
-      if (messageArray.length > 15) {
+      if (messageArray.length >= 15) {
         const size = 15;
         const auxArray = [];
         for (let i = 0; i < Math.ceil(messageArray.length / size); i += 1) {
@@ -48,20 +48,18 @@ class MainPage extends Component {
         this.setState({ displayMessagesCount: auxArray.length - 1 });
         this.setState({ firstMessagesSlicedArray: auxArray });
         this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
-      }
-      this.checkUserMessages(messageArray);
-      if (messageArray.length < 15) {
+      } else {
         this.setState((prevState) => ({
           messages: [...prevState.messages, messageArray],
         }));
       }
+      this.checkUserMessages(messageArray);
       this.setState({ displayChat: true });
 
       if (this.state.scrollDownFlag === true) {
         const list = document.querySelector('#chatList');
         list.scrollTop = list.scrollHeight;
       }
-
 
       if (document.querySelector('#chatList') === null) {
         this.setState({ displayChat: false });

@@ -24,7 +24,7 @@ class MessageDate extends Component {
 }
 
 MessageDate.propTypes = {
-  t: PropTypes.string.isRequired,
+  t: PropTypes.number.isRequired,
 };
 
 export default MessageDate;
