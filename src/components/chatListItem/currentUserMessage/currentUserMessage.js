@@ -40,7 +40,7 @@ UserMessage.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
     from: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
+    time: PropTypes.number.isRequired,
     message: PropTypes.string.isRequired,
   }).isRequired,
 };

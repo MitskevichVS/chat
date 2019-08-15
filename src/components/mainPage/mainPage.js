@@ -16,6 +16,8 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstReceivedMessageArray: [],
+      receivedCount: 0,
       messages: [],
       firstMessagesSlicedArray: [],
       displayChat: false,
@@ -39,6 +41,11 @@ class MainPage extends Component {
 
     this.ws.onmessage = (message) => {
       const messageArray = JSON.parse(message.data).reverse();
+      this.setState((prevState) => ({ receivedCount: prevState.receivedCount + 1 }));
+      if (messageArray.length > 1) {
+        this.setState({ firstReceivedMessageArray: messageArray });
+      }
+
       if (messageArray.length >= 15) {
         const size = 15;
         const auxArray = [];
@@ -69,12 +76,13 @@ class MainPage extends Component {
         this.notify(messageArray[0]);
       }
       this.checkListLength();
-      if (store.get('userMessageId')) {
+
+      if (store.get('userMessagesId') !== null) {
         if (store.get('userMessagesId').length > 0) {
           const userMessagesIdStore = store.get('userMessagesId');
           this.setState({ userMessagesId: userMessagesIdStore });
         }
-      } else store.set('userMessageId', []);
+      } else store.set('userMessagesId', []);
     };
   }
 
@@ -108,9 +116,9 @@ class MainPage extends Component {
   }
 
   checkListLength = () => {
-    const list = document.querySelector('#chatListUl');
+    const list = this.state.firstReceivedMessageArray;
     if (list === null) return;
-    const listChildLength = list.childNodes.length;
+    const listChildLength = list.length;
     const listLengthStorage = store.get('listLength');
     if (listChildLength >= listLengthStorage) {
       store.set('listLength', listChildLength);
@@ -126,7 +134,7 @@ class MainPage extends Component {
     userMessage.forEach((item) => {
       // eslint-disable-next-line max-len
       const message = array.find((arrayObj) => arrayObj.from === name && arrayObj.message === item.message);
-      if (message) {
+      if (message !== undefined) {
         this.setState((prevState) => ({
           userMessagesId: [...prevState.userMessagesId, message.id],
         }));
