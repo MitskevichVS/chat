@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.3.1",
     "@material-ui/styles": "^4.3.0",
+    "eslint-plugin-flowtype": "^4.2.0",
     "isomorphic-ws": "^4.0.1",
     "luxon": "^1.17.2",
     "prop-types": "^15.7.2",
