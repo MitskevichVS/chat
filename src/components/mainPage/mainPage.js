@@ -11,7 +11,7 @@ import NotificationIcon from '../../images/NotificationIcon.png';
 
 
 class MainPage extends Component {
-  ws = new ReconnectingWebSocket('ws://st-chat.shas.tel');
+  ws = new ReconnectingWebSocket('wss://wssproxy.herokuapp.com/');
 
   constructor(props) {
     super(props);
