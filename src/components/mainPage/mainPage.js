@@ -154,19 +154,20 @@ class MainPage extends Component {
    }
 
   logout = () => {
-    const { logout } = this.props;
+    const { logout, name } = this.props;
+    console.log(this.props);
     logout(null);
     this.ws.close();
+    store.set('prevName', name);
   }
 
   handleScroll = (event) => {
     const element = event.target;
-    const { firstMessagesSlicedArray } = this.state;
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
       this.setState({ scrollDownFlag: true });
     } else if (element.scrollTop === 0) {
       this.setState({ scrollUpFlag: true });
-      this.setInitialMessagesState(firstMessagesSlicedArray);
+      this.setInitialMessagesState(this.state.firstMessagesSlicedArray);
     } else {
       this.setState({ scrollDownFlag: false });
       this.setState({ scrollUpFlag: false });

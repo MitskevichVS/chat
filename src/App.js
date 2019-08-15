@@ -13,9 +13,15 @@ class App extends Component {
     };
   }
 
-  setName = (usernamelog) => {
-    this.setState({ username: usernamelog });
-    store.set('username', usernamelog);
+  setName = (name) => {
+    if (store.get('prevName')) {
+      const prevName = store.get('prevName');
+      if (prevName !== name && name !== null) {
+        store.set('userMessagesId', []);
+      }
+    }
+    this.setState({ username: name });
+    store.set('username', name);
   }
 
   checkUserName = () => {
