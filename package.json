@@ -15,7 +15,7 @@
     "react-uid": "^2.2.0",
     "reconnecting-websocket": "^4.1.10",
     "store2": "^2.8.0",
-    "ws": "^7.1.1"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
